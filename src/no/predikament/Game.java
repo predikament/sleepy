@@ -29,7 +29,7 @@ public class Game extends Canvas implements Runnable
 	public static final String 	TITLE 	= "Kittens vs Marbles";
 	public static final int 	FPS 	= 60;
 	public static final int		HEIGHT 	= 320;
-	public static final int 	WIDTH	= HEIGHT * 16 / 9;
+	public static final int 	WIDTH	= (int) (HEIGHT * 16.0 / 9.0);
 	public static final int 	SCALE	= 2;
 	
 	private boolean running;
@@ -74,7 +74,7 @@ public class Game extends Canvas implements Runnable
 		screenImage 	= new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		screenBitmap 	= new Bitmap(screenImage);
 		
-		character 		= new Character(this, new Vector2(50, 50));
+		character 		= new Character(this, Vector2.zero());
 		camera 			= new Camera(this, Vector2.zero(), new Vector2(5, 5));
 		level 			= new Level(this, character, camera);
 		
@@ -227,7 +227,7 @@ public class Game extends Canvas implements Runnable
 		
 		public synchronized void mouseClicked(MouseEvent event)
 		{
-			game.character.setPosition(Vector2.add(new Vector2(event.getX() / Game.SCALE, event.getY() / Game.SCALE), new Vector2(-16, -16)));
+			
 		}
 		
 		public synchronized void mouseEntered(MouseEvent event)

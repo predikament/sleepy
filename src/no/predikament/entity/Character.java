@@ -7,17 +7,19 @@ import no.predikament.util.Vector2;
 
 public class Character extends PhysicsEntity 
 {
-	private final int xHitboxOffset = 8;
-	private final int yHitboxOffset = 0;
+	private static final int HITBOX_WIDTH = 15;
+	private static final int HITBOX_HEIGHT = 31;
+	private static final int HITBOX_OFFSET_X = 8;
+	private static final int HITBOX_OFFSET_Y = 0;
 	
 	public Character(Game game)
 	{
-		super(game, Vector2.zero(), Vector2.zero(), new Vector2(16, 32));
+		super(game, Vector2.zero(), Vector2.zero(), new Vector2(HITBOX_WIDTH, HITBOX_HEIGHT));
 	}
 	
 	public Character(Game game, Vector2 position)
 	{
-		super(game, position, Vector2.zero(), new Vector2(15, 31));
+		super(game, position, Vector2.zero(), new Vector2(HITBOX_WIDTH, HITBOX_HEIGHT));
 	}
 	
 	public void render(Bitmap screen) 
@@ -32,7 +34,7 @@ public class Character extends PhysicsEntity
 		super.update(delta);
 
 		// Translate hitbox by offset to match sprite bounds
-		hitbox.translate(xHitboxOffset, yHitboxOffset);
+		hitbox.translate(HITBOX_OFFSET_X, HITBOX_OFFSET_Y);
 		
 		double vel_x = (getVelocity().getX() * 0.99) * delta;
 		double vel_y = (getVelocity().getY() * 0.99) * delta;
