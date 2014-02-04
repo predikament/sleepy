@@ -256,20 +256,12 @@ public class Game extends Canvas implements Runnable
 		{
 			int keycode = event.getKeyCode();
 			
-			try
-			{
-				if (pressedKeys.contains(keycode) == false) pressedKeys.add(keycode);
-			}
-			catch (ConcurrentModificationException cme)
-			{
-				// Not handling this for now, just printing the stack trace
-				cme.printStackTrace();
-			}
+			if (pressedKeys.contains(keycode) == false) pressedKeys.add(keycode);
 		}
 		
 		public synchronized void keyReleased(KeyEvent event)
 		{
-			int keycode = event.getKeyCode();
+			/*int keycode = event.getKeyCode();
 			
 			try
 			{
@@ -279,7 +271,7 @@ public class Game extends Canvas implements Runnable
 			{
 				// Not handling for now, just printing the stack trace
 				cme.printStackTrace();
-			}
+			}*/
 		}
 		
 		public synchronized void keyTyped(KeyEvent event)
@@ -291,8 +283,9 @@ public class Game extends Canvas implements Runnable
 		{
 			try
 			{
+				Set<Integer> handledKeys = new HashSet<Integer>();
+				
 				for (int keycode : pressedKeys)
-	
 				{
 					switch(keycode)
 					{
@@ -328,7 +321,11 @@ public class Game extends Canvas implements Runnable
 						default:
 							break;
 					}
+					
+					handledKeys.add(keycode);
 				}
+				
+				pressedKeys.removeAll(handledKeys);
 			}
 			catch (ConcurrentModificationException cme)
 			{
