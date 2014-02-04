@@ -48,7 +48,6 @@ public class Game extends Canvas implements Runnable
 	private Character character;
 	private Level level;
 	private Camera camera;
-	public Vector2 targetPosition;
 	
 	public Game()
 	{
@@ -78,7 +77,6 @@ public class Game extends Canvas implements Runnable
 		character 		= new Character(this, new Vector2(50, 50));
 		camera 			= new Camera(this, Vector2.zero(), new Vector2(5, 5));
 		level 			= new Level(this, character, camera);
-		targetPosition	= Vector2.zero();
 		
 		Art.init();
 		level.init();
@@ -118,6 +116,7 @@ public class Game extends Canvas implements Runnable
 		if (bs == null)
 		{
 			System.out.println("Creating buffer strategy (2).");
+			
 			createBufferStrategy(2);
 			
 			// bs = getBufferStrategy();
@@ -162,7 +161,7 @@ public class Game extends Canvas implements Runnable
 			++updatesPerSecond;
 			
 			// Try to render (approximately) at desired frame rate
-			if (frameTimer.getElapsedTime() >= 1000 / (double) FPS)
+			if (frameTimer.getElapsedTime() >= 1000 / FPS)
 			{
 				render(screenBitmap);
 				
@@ -213,8 +212,6 @@ public class Game extends Canvas implements Runnable
 			game.addKeyListener(this);
 			game.addMouseListener(this);
 			game.addMouseMotionListener(this);
-			
-			targetPosition = Vector2.zero();
 		}
 		
 		// MouseListener
@@ -230,7 +227,7 @@ public class Game extends Canvas implements Runnable
 		
 		public synchronized void mouseClicked(MouseEvent event)
 		{
-			game.targetPosition = new Vector2(event.getX() / Game.SCALE, event.getY() / Game.SCALE);
+			game.character.setPosition(Vector2.add(new Vector2(event.getX() / Game.SCALE, event.getY() / Game.SCALE), new Vector2(-16, -16)));
 		}
 		
 		public synchronized void mouseEntered(MouseEvent event)
@@ -259,12 +256,30 @@ public class Game extends Canvas implements Runnable
 		{
 			int keycode = event.getKeyCode();
 			
-			if (pressedKeys.contains(keycode) == false) pressedKeys.add(keycode);
+			try
+			{
+				if (pressedKeys.contains(keycode) == false) pressedKeys.add(keycode);
+			}
+			catch (ConcurrentModificationException cme)
+			{
+				// Not handling this for now, just printing the stack trace
+				cme.printStackTrace();
+			}
 		}
 		
 		public synchronized void keyReleased(KeyEvent event)
 		{
-		
+			int keycode = event.getKeyCode();
+			
+			try
+			{
+				if (pressedKeys.contains(keycode) == true) pressedKeys.remove(keycode);
+			}
+			catch (ConcurrentModificationException cme)
+			{
+				// Not handling for now, just printing the stack trace
+				cme.printStackTrace();
+			}
 		}
 		
 		public synchronized void keyTyped(KeyEvent event)
@@ -283,22 +298,18 @@ public class Game extends Canvas implements Runnable
 					{
 						case KeyEvent.VK_LEFT:
 						case KeyEvent.VK_A:
-							character.setVelocity(Vector2.add(character.getVelocity(), new Vector2(-5, 0)));
 							break;
 							
 						case KeyEvent.VK_RIGHT:
 						case KeyEvent.VK_D:
-							character.setVelocity(Vector2.add(character.getVelocity(), new Vector2(5, 0)));
 							break;
 							
 						case KeyEvent.VK_UP:
 						case KeyEvent.VK_W:
-							character.setVelocity(Vector2.add(character.getVelocity(), new Vector2(0, -5)));
 							break;
 							
 						case KeyEvent.VK_DOWN:
 						case KeyEvent.VK_S:
-							character.setVelocity(Vector2.add(character.getVelocity(), new Vector2(0, 5)));
 							break;
 						
 						case KeyEvent.VK_SPACE:
@@ -317,13 +328,11 @@ public class Game extends Canvas implements Runnable
 						default:
 							break;
 					}
-					
-					if (pressedKeys.contains(keycode)) pressedKeys.remove(keycode);
 				}
 			}
 			catch (ConcurrentModificationException cme)
 			{
-				// Ignoring this for now, just printing the stack trace
+				// Not handling this for now, just printing the stack trace
 				cme.printStackTrace();
 			}
 		}

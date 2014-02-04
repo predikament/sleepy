@@ -164,10 +164,10 @@ public class Bitmap
 	
 	public void drawRectangle(int x0, int y0, int x1, int y1, int color)
 	{
-		drawLine(x0, y0, x1 - 1, y0, color);
-		drawLine(x0, y1 - 1, x1 - 1, y1 - 1, color);
-		drawLine(x0, y0, x0, y1 - 1, color);
-		drawLine(x1 - 1, y0, x1 - 1, y1 - 1, color);
+		drawLine(x0, y0, x1, y0, color);
+		drawLine(x0, y1, x1, y1, color);
+		drawLine(x0, y0, x0, y1, color);
+		drawLine(x1, y0, x1, y1, color);
 	}
 	
 	public void fill(int x0, int y0, int x1, int y1, int color)
@@ -227,6 +227,11 @@ public class Bitmap
 				}
 			}
 		}
+	}
+	
+	public void draw(Bitmap b)
+	{
+		draw(b, 0, 0);
 	}
 	
 	public void draw(Bitmap b, double xp, double yp)

@@ -17,7 +17,7 @@ public class Character extends PhysicsEntity
 	
 	public Character(Game game, Vector2 position)
 	{
-		super(game, position, Vector2.zero(), new Vector2(16, 32));
+		super(game, position, Vector2.zero(), new Vector2(15, 31));
 	}
 	
 	public void render(Bitmap screen) 
@@ -37,19 +37,6 @@ public class Character extends PhysicsEntity
 		double vel_x = (getVelocity().getX() * 0.99) * delta;
 		double vel_y = (getVelocity().getY() * 0.99) * delta;
 		
-		setVelocity(new Vector2(vel_x, vel_y));
-		
-		if (getPosition() != game.targetPosition)
-		{
-			double angle = getPosition().angleTo(game.targetPosition);
-			
-			double ang_x = Math.cos(angle);
-			double ang_y = Math.sin(angle);
-			
-			System.out.printf("ang_x: %f\tang_y: %f\n", ang_x, ang_y);
-		}
-		// else setVelocity(Vector2.zero());
-		
-		
+		setVelocity(new Vector2(vel_x, vel_y));	
 	}
 }

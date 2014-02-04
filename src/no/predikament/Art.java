@@ -10,7 +10,7 @@ public class Art
 	
 	public Bitmap[][] tiles 	= loadAndCut("/images/tiles.png", 16, 16);
 	public Bitmap[][] character	= loadAndCut("/images/character.png", 32, 32);
-	public Bitmap[][] particles = loadAndCut("/images/particles.png", 32, 32);
+	public Bitmap[][] particles = loadAndCut("/images/particles.png", 16, 16);
 	
 	public static void init() 
 	{

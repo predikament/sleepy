@@ -68,7 +68,7 @@ public class Level
 	}
 	
 	public void update(double delta) 
-	{		
+	{
 		
 	}
 }
